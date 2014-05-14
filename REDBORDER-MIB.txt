@@ -1,0 +1,166 @@
+REDBORDER-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-TYPE, NOTIFICATION-TYPE, MODULE-IDENTITY,
+	Integer32, Opaque, enterprises, Counter32
+	FROM SNMPv2-SMI
+
+	TEXTUAL-CONVENTION, DisplayString, TruthValue
+	FROM SNMPv2-TC;
+
+redborder MODULE-IDENTITY
+	LAST-UPDATED	"201402210000Z"
+	ORGANIZATION	"Eneo Tecnologia S.L."
+	CONTACT-INFO 
+	"Eneo Tecnologia S.L.
+	email: jjprieto@eneotecnologia.com
+	"
+	DESCRIPTION
+	"First version of this mib"
+	::= { enterprises 39483 }
+
+ips OBJECT IDENTIFIER
+	::= { redborder 10 }
+
+stats OBJECT IDENTIFIER
+	::= { ips 1 }
+
+-- Type Definitions
+
+PositiveInteger ::= INTEGER (1..2147483647)
+
+StatUnitType ::= INTEGER {
+		none (0),
+		avg (1),
+		mbps (2),
+		kpps (3),
+		percent (4),
+		aps (5)
+	}
+
+StatState ::= INTEGER {
+		invalid (0),
+		normal (1)
+	}
+
+StatName ::= DisplayString (SIZE (0..32))
+StatValue ::= INTEGER (1..64)
+StatString ::= DisplayString (SIZE (0..128))
+StatTimestamp ::= INTEGER
+StatTimestamp ::= TimeTicks
+StatInstance ::= INTEGER (1..64)
+StatInstancesGroup ::= INTEGER (1..64)
+	
+-- Table has to be last in a branch to satisfy snmp walk engine implementation
+
+statsTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF StatsEntry
+	ACCESS	not-accessible
+	STATUS	mandatory
+	DESCRIPTION
+		"Statistics table"
+	::= { stats 3 }
+
+statsEntry OBJECT-TYPE
+	SYNTAX	StatsEntry
+	ACCESS	not-accessible
+	STATUS	mandatory
+	DESCRIPTION
+		"Statistics entries"
+	INDEX { statIndex }
+	::= { statsTable 1 }
+
+StatsEntry ::= SEQUENCE {
+	statIndex		PositiveInteger,
+	statName		StatName,
+	statInstance		StatInstance,
+	statInstancesGroup	StatInstancesGroup,
+	statState		StatState,
+	statTimestamp		StatTimestamp,
+	statTimesticks		StatTimeticks,
+	statString		StatString,
+	statValue		StatValue,
+	statUnit		StatUnitType
+}
+
+statIndex OBJECT-TYPE
+	SYNTAX	PositiveInteger
+	ACCESS	not-accessible
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic index."
+	::= { statsEntry 1 }
+
+statName OBJECT-TYPE
+	SYNTAX	StatName
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic name."
+	::= { statsEntry 2 }
+
+statInstance OBJECT-TYPE
+	SYNTAX	StatInstance
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic instance. One per CPU thread in IPS v2."
+	::= { statsEntry 3 }
+
+statInstancesGroup OBJECT-TYPE
+	SYNTAX	StatInstancesGroup
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic instances group. Always 0 in IPS v2."
+	::= { statsEntry 4 }
+
+statState OBJECT-TYPE
+	SYNTAX	StatState
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic state."
+	::= { statsEntry 5 }
+
+statTimestamp OBJECT-TYPE
+	SYNTAX	StatTimestamp
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic timestamp. This is the time, in Unix time Epoch, of the obtained value."
+	::= { statsEntry 6 }
+
+statTimeticks OBJECT-TYPE
+	SYNTAX	StatTimesticks
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic timesticks. Time since last obtained value."
+	::= { statsEntry 7 }
+
+statString OBJECT-TYPE
+	SYNTAX	StatString
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The string representation of statistic value."
+	::= { statsEntry 8 }
+
+statValue OBJECT-TYPE
+	SYNTAX	StatValue
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic value * 1000 in integer format."
+	::= { statsEntry 9 }
+
+statUnit OBJECT-TYPE
+	SYNTAX	StatUnitType
+	ACCESS	read-only
+	STATUS	mandatory
+	DESCRIPTION
+		"The statistic unit."
+	::= { statsEntry 10 }
+
+END
