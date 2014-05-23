@@ -1,0 +1,29 @@
+:statFile:
+:instancesGroup:
+    -
+        :group: 0
+        :name: default
+        :instances:
+            - 0
+            - 1
+            - 2
+            - 3
+
+#:tempSensors:
+#    -
+#        :name: 'System Temp'
+#        :script: "ipmitool sdr type Temperature | grep "System Temp" | sed 's/.*|//' | awk '{print $1}'"
+#
+#:fanSensors:
+#    -
+#        :name: 'FAN1'
+#        :script: "ipmitool sdr type Fan | grep -e '^FAN[ ]*1[ ]*' | sed 's/.*|//' | awk '{print $1}'"
+#    -
+#        :name: 'FAN2'
+#        :script: "ipmitool sdr type Fan | grep -e '^FAN[ ]*2[ ]*' | sed 's/.*|//' | awk '{print $1}'"
+#    -
+#        :name: 'FAN3'
+#        :script: "ipmitool sdr type Fan | grep -e '^FAN[ ]*3[ ]*' | sed 's/.*|//' | awk '{print $1}'"
+
+:versionPlatform: 3
+:statTimestampInterval: 300
