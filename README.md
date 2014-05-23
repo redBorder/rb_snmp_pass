@@ -7,6 +7,7 @@ snort statistics provided via perfmonitor preprocessor.
 You can find more information about net-snmp and snort at his official homepage:
 
 http://www.net-snmp.org
+
 http://www.snort.org
 
 With rb_snmp_pass.rb and its MIB file, a system running snort can provides
