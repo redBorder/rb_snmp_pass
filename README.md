@@ -13,8 +13,8 @@ is installed.
 
 ## Changes
 
-14/05/2014 - Version 0.1 - Uploaded to github first version
-23/05/2014 - Version 0.2 - New version with multi groups support (2 index)
+- 14/05/2014 - Version 0.1 - Uploaded to github first version
+- 23/05/2014 - Version 0.2 - New version with multi groups support (2 index)
 
 ## Install
 
